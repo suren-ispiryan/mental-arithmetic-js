@@ -13,13 +13,23 @@
     </head>
     <body>
         <section class="container-fluid my-5" id="game-board">
-            <div class="parent">
+            <div class="parent" id="parent">
                 <select class="form-select" id="difficulty-level" aria-label="Default select example">
-                    <option selected value="1500">1.5s Easy</option>
-                    <option value="1000">1s Medium</option>
-                    <option value="500">0.5s Hard</option>
+                    <option selected value="1500">1.5 Seconds</option>
+                    <option value="1000">1 Seconds</option>
+                    <option value="500">0.5 Seconds</option>
+                </select>
+                <select class="form-select" id="numbers-types" aria-label="Default select example">
+                    <option selected value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
                 </select>
                 <button id="start" class="mt-3 btn btn-success">Start game</button>
+            </div>
+
+            <div id="parent2" class="parent">
+                <input id="answer-input" class="answer-input" type="number" placeholder="write your answer">
+                <button id="answer-button" class="answer-button btn btn-success">Submit answer</button>
             </div>
         </section>
         <script src="script.js"></script>

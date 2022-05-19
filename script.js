@@ -1,43 +1,43 @@
 let difficultyLevel;
+let numberTypes;
 let single;
 let double;
 let numbers = [];
-let gameBoard = document.getElementById('game-board');
+let gameBoard;
 let correctAnswer = 0;
 
 window.onload = () => {
+    gameBoard = document.getElementById('game-board');
     document.getElementById('start').addEventListener('click', start);
 };
 
 const start = () => {
     difficultyLevel = +document.getElementById('difficulty-level').value;
+    numberTypes = document.getElementById('numbers-types').value;
     chooseLevel();
     createNumbers();
-
     // draw random numbers
     let timer;
     let index = 0;
+    drawNumbers(index)
+    index++
     timer = setInterval(() => {
+        document.getElementById(index-1).remove()
         drawNumbers(index);
         index++;
         if (index === 5) {
             clearInterval(timer);
-
             // draw answer input
-            setTimeout(() => {
-                drawAnswerForm();
-
-                document.getElementById('answer-button').addEventListener('click', submitAnswer);
-            }, difficultyLevel);
+            setTimeout(() => { drawAnswerForm() }, difficultyLevel);
         }
     }, difficultyLevel);
 }
 
 const chooseLevel = () => {
-    if (difficultyLevel === 500) {
+    if (numberTypes === 'hard') {
         single = 0;
         double = 5;
-    } else if (difficultyLevel === 1000) {
+    } else if (numberTypes === 'medium') {
         single = 3;
         double = 2;
     } else {
@@ -59,31 +59,21 @@ const createNumbers = () => {
 const drawNumbers = (i) => {
     let randomisedNumber = document.createElement('div');
     randomisedNumber.classList.add('randomised-numbers');
+    randomisedNumber.setAttribute('id', i);
     randomisedNumber.innerText = numbers[i];
-    randomisedNumber.style.marginTop = Math.round(-50 + Math.random() * 100) + '%';
-    randomisedNumber.style.marginLeft = Math.round(-50 + Math.random() * 100) + '%';
-    gameBoard.innerHTML = '';
+    randomisedNumber.style.marginTop = Math.round(-50 + Math.random() * 100) + 'vh';
+    randomisedNumber.style.marginLeft = Math.round(-50 + Math.random() * 100) + 'vw';
+    document.getElementById('parent').style.display = 'none';
     gameBoard.append(randomisedNumber);
 }
 
 const drawAnswerForm = () => {
-    // answer input
-    const answerInput = document.createElement('input');
-    answerInput.setAttribute('type', 'number');
-    answerInput.setAttribute('placeholder', 'write answer');
-    answerInput.setAttribute('id', 'answer-input');
-    answerInput.classList.add('answer-input');
-
-    // answer button
-    const answerButton = document.createElement('button');
-    answerButton.setAttribute('id', 'answer-button');
-    answerButton.classList.add('answer-button', 'btn', 'btn-success');
-    answerButton.innerText = 'answer';
-
-    // append to DOM
-    gameBoard.innerHTML = '';
-    gameBoard.append(answerInput);
-    gameBoard.append(answerButton);
+    let divsToHide = document.getElementsByClassName('randomised-numbers');
+    for (let i = 0; i < divsToHide.length; i++) {
+        divsToHide[i].remove();
+    }
+    document.getElementById('parent2').style.display = 'block';
+    document.getElementById('answer-button').addEventListener('click', submitAnswer);
 }
 
 const submitAnswer = () => {
@@ -92,12 +82,24 @@ const submitAnswer = () => {
     for (let i = 0; i < numbers.length; i++) {
         correctAnswer = correctAnswer + numbers[i];
     }
-
     // check answer
     if (correctAnswer === +usersAnswer) {
         alert('You won!!!');
     } else {
         alert('You loose!!! correct answer was ' + correctAnswer);
     }
-    location.reload();
+    // start new game
+    const answerButtonNewGame = document.createElement('button');
+    answerButtonNewGame.setAttribute('id', 'button-new-game');
+    answerButtonNewGame.classList.add('button-new-game', 'btn', 'btn-success');
+    answerButtonNewGame.innerText = 'start new game';
+    document.getElementById('parent2').style.display = 'none';
+    gameBoard.append(answerButtonNewGame);
+    document.getElementById('button-new-game').addEventListener('click', startNewGame);
+}
+
+const startNewGame = () => {
+    document.getElementById('button-new-game').remove();
+    document.getElementById('parent').style.display = 'block';
+    document.getElementById('start').addEventListener('click', start);
 }
