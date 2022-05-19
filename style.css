@@ -1,0 +1,42 @@
+#game-board {
+    flex-wrap: wrap;
+    width: 90vw;
+    height: 90vh;
+    border: 5px green solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#difficulty-level {
+    width: 100%;
+    cursor: pointer;
+}
+
+#start {
+    width: 100%;
+}
+
+.randomised-numbers {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    border: 2px red solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    color: green;
+}
+
+#answer-button {
+    margin: 0 5px;
+}
+
+#answer-input {
+    padding-left: 10px;
+    height: 40px;
+    border: 1px black solid;
+    border-radius: 5px;
+}
