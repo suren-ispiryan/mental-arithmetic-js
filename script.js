@@ -68,6 +68,7 @@ const drawNumbers = (i) => {
 }
 
 const drawAnswerForm = () => {
+    document.getElementById('answer-input').value = '';
     let divsToHide = document.getElementsByClassName('randomised-numbers');
     for (let i = 0; i < divsToHide.length; i++) {
         divsToHide[i].remove();
