@@ -3,11 +3,11 @@ let numberTypes;
 let single;
 let double;
 let numbers = [];
-let gameBoard;
+const gameBoard = document.getElementById('game-board');
 let correctAnswer = 0;
+let number;
 
 window.onload = () => {
-    gameBoard = document.getElementById('game-board');
     document.getElementById('start').addEventListener('click', start);
 };
 
@@ -17,15 +17,14 @@ const start = () => {
     chooseLevel();
     createNumbers();
     // draw random numbers
-    let timer;
     let index = 0;
     drawNumbers(index)
     index++
-    timer = setInterval(() => {
-        document.getElementById(index-1).remove()
+    const timer = setInterval(() => {
+        document.getElementById(number).remove();
         drawNumbers(index);
         index++;
-        if (index === 5) {
+        if (index === numbers.length) {
             clearInterval(timer);
             // draw answer input
             setTimeout(() => { drawAnswerForm() }, difficultyLevel);
@@ -57,13 +56,15 @@ const createNumbers = () => {
 }
 
 const drawNumbers = (i) => {
+    number = 'number-'+i
     let randomisedNumber = document.createElement('div');
     randomisedNumber.classList.add('randomised-numbers');
-    randomisedNumber.setAttribute('id', i);
+    randomisedNumber.setAttribute('id', number);
     randomisedNumber.innerText = numbers[i];
-    randomisedNumber.style.marginTop = Math.round(-50 + Math.random() * 100) + 'vh';
-    randomisedNumber.style.marginLeft = Math.round(-50 + Math.random() * 100) + 'vw';
-    document.getElementById('parent').style.display = 'none';
+    const randomPlaceCoordinates = Math.round(-50 + Math.random() * 100);
+    randomisedNumber.style.marginTop = randomPlaceCoordinates + 'vh';
+    randomisedNumber.style.marginLeft = randomPlaceCoordinates + 'vw';
+    document.getElementById('start-form-container').style.display = 'none';
     gameBoard.append(randomisedNumber);
 }
 
@@ -73,7 +74,7 @@ const drawAnswerForm = () => {
     for (let i = 0; i < divsToHide.length; i++) {
         divsToHide[i].remove();
     }
-    document.getElementById('parent2').style.display = 'block';
+    document.getElementById('answer-form-container').style.display = 'block';
     document.getElementById('answer-button').addEventListener('click', submitAnswer);
 }
 
@@ -81,26 +82,25 @@ const submitAnswer = () => {
     correctAnswer = 0;
     const usersAnswer = document.getElementById('answer-input').value;
     for (let i = 0; i < numbers.length; i++) {
-        correctAnswer = correctAnswer + numbers[i];
+        correctAnswer += numbers[i];
     }
     // check answer
     if (correctAnswer === +usersAnswer) {
-        alert('You won!!!');
+        alert('You won.');
     } else {
-        alert('You loose!!! correct answer was ' + correctAnswer);
+        alert('You loose. correct answer was ' + correctAnswer);
     }
     // start new game
     const answerButtonNewGame = document.createElement('button');
     answerButtonNewGame.setAttribute('id', 'button-new-game');
     answerButtonNewGame.classList.add('button-new-game', 'btn', 'btn-success');
     answerButtonNewGame.innerText = 'start new game';
-    document.getElementById('parent2').style.display = 'none';
+    document.getElementById('answer-form-container').style.display = 'none';
     gameBoard.append(answerButtonNewGame);
     document.getElementById('button-new-game').addEventListener('click', startNewGame);
 }
 
 const startNewGame = () => {
     document.getElementById('button-new-game').remove();
-    document.getElementById('parent').style.display = 'block';
-    document.getElementById('start').addEventListener('click', start);
+    document.getElementById('start-form-container').style.display = 'block';
 }
